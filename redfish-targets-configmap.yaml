@@ -1,0 +1,9 @@
+# redfish-targets-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redfish-targets
+  namespace: monitoring
+data:
+  targets.json: |
+    []

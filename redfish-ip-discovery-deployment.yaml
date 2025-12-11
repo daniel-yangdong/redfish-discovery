@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redfish-discovery
+  namespace: monitoring
+  labels:
+    app: redfish-discovery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redfish-discovery
+  template:
+    metadata:
+      labels:
+        app: redfish-discovery
+    spec:
+      containers:
+      - name: redfish-discovery
+        image: cloud-harbor.com:8080/daniel/redfish-discovery:v1.0.2
+        # 直接运行Python脚本，不再使用复杂的命令参数
+        command: ["python3"]
+        args:
+        - "/app/redfish-discovery-valid-only-ip.py"
+        volumeMounts:
+        - na
+          mountPath: /etc/redfish
+          readOnly: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+      volumes:
+      - name: redfish-networks
+        configMap:
+          name: redfish-scanned-networks
+      serviceAccountName: redfish-discovery-sa

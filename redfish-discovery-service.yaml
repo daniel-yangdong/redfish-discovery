@@ -1,0 +1,17 @@
+# redfish-discovery-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redfish-discovery
+  namespace: monitoring
+  labels:
+    app: redfish-discovery
+spec:
+  selector:
+    app: redfish-discovery
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  type: ClusterIP
